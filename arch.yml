@@ -61,7 +61,7 @@
     - name: Clone dotfiles
       git:
         repo: "{{ home_user }}"
-        dest: "{{ home_dir }}"/dotfiles
+        dest: "{{ home_dir }}/dotfiles"
       tags: git, dotfiles
 
     - name: Prep dotfiles
