@@ -1,0 +1,22 @@
+- hosts: localhost
+  become: yes
+  gather_facts: false
+  vars:
+    dotfiles:
+    home_dir: /home/marco
+    home_user: marco
+
+  tasks:
+    - name: Installing core pacman packages
+      pacman:
+        name:
+          - base-devel
+          - screen
+          - zsh
+          - zsh-syntax-highlighting
+          - tmux
+          - htop
+          - tcpdump
+        state: present
+        update_cache: true
+      tags: install, packages, pacman
