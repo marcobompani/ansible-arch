@@ -2,7 +2,7 @@
   become: true
   gather_facts: false
   vars:
-    dotfiles:
+    dotfiles: https://github.com/marcobompani/dotfiles
     home_dir: /home/marco
     home_user: marco
 
@@ -27,10 +27,10 @@
       git:
         repo: https://aur.archlinux.org/yay.git
         dest: /opt/yay
-      tags: yay
+      tags: yay, git
 
     - name: Prep yay
-      shell: chown -R {{ home_user }} /opt/yay
+      shell: chown -R {{ home_user }}:{{ home_user }} /opt/yay
       tags: yay
 
     - name: Install yay
@@ -57,3 +57,13 @@
         - google-chrome
       become_user: "{{ home_user }}"
       tags: aur, install, packages
+
+    - name: Clone dotfiles
+      git:
+        repo: "{{ home_user }}"
+        dest: "{{ home_dir }}"/dotfiles
+      tags: git, dotfiles
+
+    - name: Prep dotfiles
+      shell: chown -R {{ home_user }}:{{ home_user }} /opt/yay
+      tags: dotfiles
