@@ -16,6 +16,7 @@
           - tmux
           - htop
           - tcpdump
+          - git
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -24,4 +25,24 @@
       git:
         repo: https://aur.archlinux.org/yay.git
         dest: /opt/yay
+      tags: yay
+
+    - name: Prep yay
+      shell: chown -R {{ home_user }} /opt/yay
+      tags: yay
+
+    - name: Install yay
+      command: makepgk --noconfirm -si
+      become: false
+      args:
+        chdir: /opt/yay
+      tags: yay
+
+    - name: Run yay
+      expect:
+        command: yay
+        timeout: 300
+        responses:
+          Y/n: Y
+      become: false
       tags: yay
