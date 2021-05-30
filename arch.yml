@@ -1,5 +1,5 @@
 - hosts: localhost
-  become: yes
+  become: true
   gather_facts: false
   vars:
     dotfiles:
@@ -11,7 +11,6 @@
       pacman:
         name:
           - base-devel
-          - screen
           - zsh
           - zsh-syntax-highlighting
           - tmux
@@ -20,3 +19,9 @@
         state: present
         update_cache: true
       tags: install, packages, pacman
+
+    - name: Clone yay
+      git:
+        repo: https://aur.archlinux.org/yay.git
+        dest: /opt/yay
+      tags: yay
