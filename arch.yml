@@ -50,7 +50,7 @@
       tags: yay
 
     - name: Install AUR packages
-      command: yay --confirm --needed -S {{ item }}
+      command: yay --noconfirm --needed -S {{ item }}
       with_items: 
         - zoom
         - slack-desktop
