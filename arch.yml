@@ -32,7 +32,7 @@
       tags: yay
 
     - name: Install yay
-      command: makepgk --noconfirm -si
+      command: makepkg --noconfirm -si
       become: false
       args:
         chdir: /opt/yay
