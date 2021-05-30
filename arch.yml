@@ -48,3 +48,12 @@
           Y/n: Y
       become: true
       tags: yay
+
+    - name: Install AUR packages
+      command: yay --confirm --needed -S {{ item }}
+      with_items: 
+        - zoom
+        - slack-desktop
+        - google-chrome
+      become_user: "{{ home_user }}"
+      tags: aur, install, packages
