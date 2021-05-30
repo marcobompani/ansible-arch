@@ -7,21 +7,51 @@
     home_user: marco
 
   tasks:
-    - name: Installing core pacman packages
+    - name: Install core pacman packages
       pacman:
         name:
           - base-devel
-          - zsh
-          - zsh-syntax-highlighting
           - tmux
           - htop
           - tcpdump
           - git
           - python-pip
           - python-pexpect
+          - trash-cli
+          - xsel
+          - net-tools
+          - nfs-utils
+          - exa
+          - wget
+          - curl
+          - dnsutils
+          - findutils
+          - unzip
+          - openssl
+          - mlocate
+          - dunst
+          - speedtest-cli
+          - neovim
+          - man-db
+          - man-pages
+          - mingw-w64-gcc
+          - mingw-w64-binutils
+          - pyenv
+          - python-pipenv
+          - cron
         state: present
         update_cache: true
       tags: install, packages, pacman
+
+    - name: Install utilities
+      pacman:
+        name:
+          - xorg
+          - lightdm
+          - rofi
+          - alacritty
+          - i3-wm
+          - i3-gaps
 
     - name: Clone yay
       git:
@@ -55,6 +85,7 @@
         - zoom
         - slack-desktop
         - google-chrome
+        - polybar
       become_user: "{{ home_user }}"
       tags: aur, install, packages
 
@@ -67,3 +98,41 @@
     - name: Prep dotfiles
       shell: chown -R {{ home_user }}:{{ home_user }} {{ home_dir }}/dotfiles
       tags: dotfiles
+
+    - name: Make directories
+      file:
+        path: "{{ item.path }}"
+        state: directory
+        owner: "{{ home_user }}"
+        group: "{{ home_user }}"
+        mode: "0755"
+      with_items:
+        - { path: "{{ home_dir }}/.config" }
+        - { path: "{{ home_dir }}/.config/polybar" }
+        - { path: "{{ home_dir }}/.config/nvim" }
+        - { path: "{{ home_dir }}/.config/alacritty" }
+        - { path: "{{ home_dir }}/.config/rofi" }
+        - { path: "{{ home_dir }}/.config/dunst" }
+        - { path: "{{ home_dir }}/.config/i3" }
+        - { path: "{{ home_dir }}/.config/picom" }
+        - { path: "{{ home_dir }}/.local/share/nvim/backup" }
+      tags: dotfiles, folders
+
+    - name: Link dotfiles
+      file:
+        src: "{{ item.src }}"
+        dest: "{{ item.dest }}"
+        owner: "{{ home_user }}"
+        group: "{{ home_user }}"
+        mode: "0644"
+        state: link
+      with_items:
+        - { src: "{{ dotfiles }}/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
+        - { src: "{{ dotfiles }}/nvim/init.vim", dest: "{{ home_dir }}/.config/nvim/init.vim" }
+        - { src: "{{ dotfiles }}/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
+        - { src: "{{ dotfiles }}/aliases/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
+        - { src: "{{ dotfiles }}/alacritty/alacritty.yml", dest: "{{ home_dir }}/.config/alacritty/alacritty.yml" }
+        - { src: "{{ dotfiles }}/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
+        - { src: "{{ dotfiles }}/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
+        - { src: "{{ dotfiles }}/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi" }
+      tags: dotfiles, symlinks
