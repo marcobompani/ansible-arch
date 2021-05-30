@@ -17,6 +17,8 @@
           - htop
           - tcpdump
           - git
+          - python-pip
+          - python-pexpect
         state: present
         update_cache: true
       tags: install, packages, pacman
