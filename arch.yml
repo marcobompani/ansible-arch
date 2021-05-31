@@ -20,6 +20,7 @@
           - trash-cli
           - xsel
           - net-tools
+          - netctl
           - nfs-utils
           - exa
           - wget
@@ -29,7 +30,6 @@
           - unzip
           - openssl
           - mlocate
-          - dunst
           - speedtest-cli
           - neovim
           - man-db
@@ -39,6 +39,9 @@
           - pyenv
           - python-pipenv
           - cron
+          - nvidia
+          - xorg-server
+          - xorg-xinit
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -46,13 +49,17 @@
     - name: Install utilities
       pacman:
         name:
-          - xorg
           - lightdm
+          - lightdm-gtk-greeter
           - rofi
           - alacritty
-          - i3-wm
           - i3-gaps
+          - i3-lock
+          - i3-blocks
+          - i3-status
           - keepass
+          - dunst
+          - alsa-utils
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -138,5 +145,5 @@
         - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.yml", dest: "{{ home_dir }}/.config/alacritty/alacritty.yml" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
-        - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi" }
+        - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
       tags: dotfiles, symlinks
