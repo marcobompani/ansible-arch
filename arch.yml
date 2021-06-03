@@ -42,6 +42,8 @@
           - nvidia
           - xorg-server
           - xorg-xinit
+          - ranger
+          - ttf-hack
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -49,14 +51,16 @@
     - name: Install utilities
       pacman:
         name:
-          - lightdm
-          - lightdm-gtk-greeter
           - rofi
           - alacritty
           - i3-gaps
+          - i3lock
           - keepass
           - dunst
           - alsa-utils
+          - feh
+          - vlc
+          - flameshot
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -94,6 +98,10 @@
         - slack-desktop
         - google-chrome
         - polybar
+        - siji-git
+        - ttf-unifont
+        - picom
+        - gnome-shell-extension-topicons-plus
       become_user: "{{ home_user }}"
       tags: aur, install, packages
 
@@ -123,6 +131,7 @@
         - { path: "{{ home_dir }}/.config/dunst" }
         - { path: "{{ home_dir }}/.config/i3" }
         - { path: "{{ home_dir }}/.config/picom" }
+        - { path: "{{ home_dir }}/.config/flameshot" }
         - { path: "{{ home_dir }}/.local/share/nvim/backup" }
       tags: dotfiles, folders
 
@@ -143,4 +152,14 @@
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
+        - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
+        - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
       tags: dotfiles, symlinks
+
+    - name: Create xinitrc
+      shell: echo "exec i3" > {{ home_dir }}/.xinitrc
+      tags: xinitrc
+
+    - name: Prep xinitrc
+      shell: chown -R {{ home_user }}:{{ home_user }} {{ home_dir }}/.xinitrc
+      tags: xinitrc
