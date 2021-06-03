@@ -163,3 +163,10 @@
     - name: Prep xinitrc
       shell: chown -R {{ home_user }}:{{ home_user }} {{ home_dir }}/.xinitrc
       tags: xinitrc
+
+    - name: Install pip packages
+      pip:
+        name:
+          - youtube-dl
+          - twitch-dl
+      tags: install, packages, pip
