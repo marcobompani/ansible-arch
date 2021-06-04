@@ -159,6 +159,7 @@
         - { src: "{{ home_dir }}/dotfiles/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
         - { src: "{{ home_dir }}/dotfiles/aliases/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
         - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.conf", dest: "{{ home_dir }}/.config/alacritty/alacritty.conf" }
+        - { src: "{{ home_dir }}/dotfiles/polybar/launch.sh", dest: "{{ home_dir }}/.config/polybar/launch.sh" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
@@ -192,9 +193,8 @@
       tags: vim, install
 
     - name: Install Vim Plugins
-      command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim.init.vim" -c PlugInstall -c qa
+      command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim/init.vim" -c PlugInstall -c qa
       become_user: "{{ home_user }}"
-      ignore_errors: true
       tags: vim, install, plugins
 
     - name: Enable lightdm
