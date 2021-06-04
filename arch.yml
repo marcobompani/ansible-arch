@@ -180,7 +180,7 @@
 
     - name: Check for Vim-Plug
       stat:
-        path: "{{ home_dir }}"/.local/share/nvim/site/autoload/plug.vim
+        path: "{{ home_dir }}/.local/share/nvim/site/autoload/plug.vim"
       register: plug_exists
       become_user: "{{ home_user }}"
       tags: vim, install
