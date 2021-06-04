@@ -194,7 +194,7 @@
     - name: Install Vim Plugins
       command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim.init.vim" -c PlugInstall -c qa
       become_user: "{{ home_user }}"
-      ignore_error: true
+      ignore_errors: true
       tags: vim, install, plugins
 
     - name: Enable lightdm
