@@ -44,6 +44,8 @@
           - xorg-xinit
           - ranger
           - ttf-hack
+          - keybase
+          - wireshark-cli
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -61,6 +63,9 @@
           - feh
           - vlc
           - flameshot
+          - wireshark-qt
+          - lightdm
+          - lightdm-gtk-greeter
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -72,7 +77,7 @@
       tags: yay, git
 
     - name: Prep yay
-      shell: chown -R {{ home_user }}:{{ home_user }} /opt/yay
+      command: chown -R {{ home_user }}:{{ home_user }} /opt/yay
       tags: yay
 
     - name: Install yay
@@ -109,11 +114,8 @@
       git:
         repo: "{{ dotfiles }}"
         dest: "{{ home_dir }}/dotfiles"
+      become_user: "{{ home_user }}"
       tags: git, dotfiles
-
-    - name: Prep dotfiles
-      shell: chown -R {{ home_user }}:{{ home_user }} {{ home_dir }}/dotfiles
-      tags: dotfiles
 
     - name: Make directories
       file:
@@ -158,10 +160,7 @@
 
     - name: Create xinitrc
       shell: echo "exec i3" > {{ home_dir }}/.xinitrc
-      tags: xinitrc
-
-    - name: Prep xinitrc
-      shell: chown -R {{ home_user }}:{{ home_user }} {{ home_dir }}/.xinitrc
+      become_user: "{{ home_user }}"
       tags: xinitrc
 
     - name: Install pip packages
@@ -170,3 +169,26 @@
           - youtube-dl
           - twitch-dl
       tags: install, packages, pip
+
+    - name: Install Vim-Plug
+      shell: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+
+      become_user: "{{ home_user }}"
+      when: plug_exists.stat.exists == false
+      tags: vim, install
+
+    - name: Install Vim Plugins
+      command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim.init.vim" -c PlugInstall -c qa
+      become_user: "{{ home_user }}"
+      tags: vim, install, plugins
+
+    - name: Enable lightdm
+      ansible.builtin.systemd:
+        name: lightdm
+        enabled: yes
+        masked: no
+      tags: lightdm, sysconfig, systemd
+
+    - name: Set graphical.target for lightdm
+      shell: systemctl set-default graphical.target
+      tags: lightdm, sysconfig
