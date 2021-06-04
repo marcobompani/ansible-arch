@@ -50,6 +50,13 @@
         update_cache: true
       tags: install, packages, pacman
 
+    - name: Install Virtualbox guest utils
+      pacman: virtualbox-guest-utils
+      state: present
+      update_cache: true
+      when: bios_version == "VirtualBox"
+      tags: install, packages, pacman, virtualbox
+
     - name: Install utilities
       pacman:
         name:
