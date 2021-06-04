@@ -55,7 +55,7 @@
         name: virtualbox-guest-utils
         state: present
         update_cache: true
-      when: bios_version == "VirtualBox"
+      when: ansible_facts['bios_version'] == "VirtualBox"
       tags: install, packages, pacman, virtualbox
 
     - name: Install utilities
