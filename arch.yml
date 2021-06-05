@@ -72,8 +72,6 @@
           - vlc
           - flameshot
           - wireshark-qt
-          - lightdm
-          - lightdm-gtk-greeter
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -159,13 +157,22 @@
         - { src: "{{ home_dir }}/dotfiles/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
         - { src: "{{ home_dir }}/dotfiles/aliases/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
         - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.conf", dest: "{{ home_dir }}/.config/alacritty/alacritty.conf" }
-        - { src: "{{ home_dir }}/dotfiles/polybar/launch.sh", dest: "{{ home_dir }}/.config/polybar/launch.sh" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
       tags: dotfiles, symlinks
+
+    - name: Link launch.sh
+      file:
+        src: "{{ home_dir }}/dotfiles/polybar/launch.sh"
+        dest: "{{ home_dir }}/.config/polybar/launch.sh"
+        owner: "{{ home_user }}"
+        group: "{{ home_user }}"
+        mode: "0744"
+        state: link
+      tags: symlinks
 
     - name: Create xinitrc
       shell: echo "exec i3" > {{ home_dir }}/.xinitrc
@@ -196,14 +203,3 @@
       command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim/init.vim" -c PlugInstall -c qa
       become_user: "{{ home_user }}"
       tags: vim, install, plugins
-
-    - name: Enable lightdm
-      ansible.builtin.systemd:
-        name: lightdm
-        enabled: yes
-        masked: no
-      tags: lightdm, sysconfig, systemd
-
-    - name: Set graphical.target for lightdm
-      shell: systemctl set-default graphical.target
-      tags: lightdm, sysconfig
