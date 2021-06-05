@@ -72,6 +72,7 @@
           - vlc
           - flameshot
           - wireshark-qt
+          - discord
         state: present
         update_cache: true
       tags: install, packages, pacman
