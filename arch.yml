@@ -156,7 +156,8 @@
         - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
         - { src: "{{ home_dir }}/dotfiles/nvim/init.vim", dest: "{{ home_dir }}/.config/nvim/init.vim" }
         - { src: "{{ home_dir }}/dotfiles/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
-        - { src: "{{ home_dir }}/dotfiles/aliases/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
+        - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
+        - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
         - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.conf", dest: "{{ home_dir }}/.config/alacritty/alacritty.conf" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
