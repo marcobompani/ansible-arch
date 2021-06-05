@@ -46,6 +46,7 @@
           - ttf-hack
           - keybase
           - wireshark-cli
+          - gnupg
         state: present
         update_cache: true
       tags: install, packages, pacman
