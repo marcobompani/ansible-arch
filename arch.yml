@@ -106,7 +106,7 @@
 
     - name: Install AUR packages
       command: yay --noconfirm --needed -S {{ item }}
-      with_items: 
+      with_items:
         - zoom
         - slack-desktop
         - google-chrome
@@ -162,7 +162,7 @@
         - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.conf", dest: "{{ home_dir }}/.config/alacritty/alacritty.conf" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
-        - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
+        - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/arthur.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
       tags: dotfiles, symlinks
