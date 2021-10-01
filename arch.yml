@@ -74,6 +74,7 @@
           - flameshot
           - wireshark-qt
           - discord
+          - radare2
         state: present
         update_cache: true
       tags: install, packages, pacman
