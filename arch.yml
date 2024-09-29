@@ -22,7 +22,6 @@
           - net-tools
           - netctl
           - nfs-utils
-          - exa
           - wget
           - curl
           - dnsutils
@@ -42,10 +41,9 @@
           - nvidia
           - xorg-server
           - xorg-xinit
-          - ranger
+          - yazi
           - ttf-hack
           - keybase
-          - wireshark-cli
           - gnupg
         state: present
         update_cache: true
@@ -63,18 +61,15 @@
       pacman:
         name:
           - rofi
-          - alacritty
+          - kitty
           - i3-gaps
           - i3lock
           - keepass
           - dunst
           - alsa-utils
-          - feh
           - vlc
           - flameshot
-          - wireshark-qt
           - discord
-          - radare2
         state: present
         update_cache: true
       tags: install, packages, pacman
@@ -108,8 +103,6 @@
     - name: Install AUR packages
       command: yay --noconfirm --needed -S {{ item }}
       with_items:
-        - zoom
-        - slack-desktop
         - google-chrome
         - polybar
         - siji-git
