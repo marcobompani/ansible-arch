@@ -170,11 +170,13 @@
         owner: "{{ home_user }}"
         group: "{{ home_user }}"
         mode: "0644"
+        force: true
         state: link
       with_items:
         - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
+        - { src: "{{ home_dir }}/dotfiles/sway/config", dest: "{{ home_dir }}/.config/sway/config" }
         - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
-        - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc", force: true }
+        - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/config.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
