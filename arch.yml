@@ -87,7 +87,7 @@
           - sway
           - swaybg
           - polkit
-          - polybar
+          - waybar
           - swaylock
           - swayidle
           - rofi
