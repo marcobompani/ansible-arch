@@ -147,6 +147,17 @@
         dest: "{{ home_dir }}/dotfiles"
       become_user: "{{ home_user }}"
 
+    - name: Get SpaceVim install script
+      get_url:
+        url: https://spacevim.org/install.sh
+        dest: "/home/{{ home_user }}/install-spacevim.sh"
+        mode: "0747"
+      become_user: "{{ home_user }}"
+
+    - name: Install SpaceVim
+      become_user: "{{ home_user }}"
+      command: "bash /home/{{ home_user }}/install-spacevim.sh"
+
     - name: Make directories
       file:
         path: "{{ item.path }}"
@@ -156,6 +167,7 @@
         mode: "0755"
       with_items:
         - { path: "{{ home_dir }}/.config" }
+        - { path: "{{ home_dir }}/.SpaceVim.d" }
         - { path: "{{ home_dir }}/.config/kitty" }
         - { path: "{{ home_dir }}/.config/sway" }
         - { path: "{{ home_dir }}/.config/polybar" }
@@ -184,4 +196,5 @@
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/config.rasi", dest: "{{ home_dir }}/.config/rofi/config.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
+        - { src: "{{ home_dir }}/dotfiles/spacevim/init.toml", dest: "{{ home_dir }}/.SpaceVim.d/init.toml" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
