@@ -114,7 +114,7 @@
 
     - name: Install yay
       command: makepkg --noconfirm -si
-      become: true
+      become_user: {{ "home_user" }}
       args:
         chdir: /opt/yay
 
