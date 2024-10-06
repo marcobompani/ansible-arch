@@ -84,6 +84,9 @@
         name:
           - sway
           - greetd
+          - swaybg
+          - foot
+          - polkit
         state: present
         update_cache: true
 
