@@ -152,6 +152,7 @@
         mode: "0755"
       with_items:
         - { path: "{{ home_dir }}/.config" }
+        - { path: "{{ home_dir }}/.config/sway" }
         - { path: "{{ home_dir }}/.config/polybar" }
         - { path: "{{ home_dir }}/.config/rofi" }
         - { path: "{{ home_dir }}/.config/dunst" }
