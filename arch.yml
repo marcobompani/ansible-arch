@@ -50,7 +50,7 @@
 
     - name: Create user
       user:
-        name: {{ home_user }}
+        name: "{{ home_user }}"
         shell: /bin/bash
         groups: wheel
         password: "{{ password | password_hash('sha512') }}"
