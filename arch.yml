@@ -38,6 +38,8 @@
           - openssh
           - obsidian
           - nvidia
+          - nerd-fonts
+          - ttf-jetbrains-mono
         state: present
         update_cache: true
 
@@ -137,7 +139,6 @@
       command: yay --noconfirm --needed -S {{ item }}
       with_items:
         - google-chrome
-        - ttf-meslo-nerd
       become_user: "{{ home_user }}"
 
     - name: Clone dotfiles
@@ -155,6 +156,7 @@
         mode: "0755"
       with_items:
         - { path: "{{ home_dir }}/.config" }
+        - { path: "{{ home_dir }}/.config/kitty" }
         - { path: "{{ home_dir }}/.config/sway" }
         - { path: "{{ home_dir }}/.config/polybar" }
         - { path: "{{ home_dir }}/.config/rofi" }
@@ -175,10 +177,11 @@
       with_items:
         - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
         - { src: "{{ home_dir }}/dotfiles/sway/config", dest: "{{ home_dir }}/.config/sway/config" }
+        - { src: "{{ home_dir }}/dotfiles/kitty/kitty.conf", dest: "{{ home_dir }}/.config/kitty/kitty.conf" }
         - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
         - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
-        - { src: "{{ home_dir }}/dotfiles/rofi/config.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
+        - { src: "{{ home_dir }}/dotfiles/rofi/config.rasi", dest: "{{ home_dir }}/.config/rofi/config.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
