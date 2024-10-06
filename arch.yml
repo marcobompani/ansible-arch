@@ -25,6 +25,7 @@
           - man-pages
           - pyenv
           - python-pipenv
+          - python-passlib
           - cron
           - xorg
           - vlc
@@ -47,6 +48,8 @@
         mode: 0440
         create: yes
         validate: /usr/bin/visudo -cf %s
+      tags:
+        - user
 
     - name: Create user
       user:
@@ -54,6 +57,8 @@
         shell: /bin/bash
         groups: wheel
         password: "{{ password | password_hash('sha512') }}"
+      tags:
+        - user
 
     - name: Install download utilities
       pacman:
