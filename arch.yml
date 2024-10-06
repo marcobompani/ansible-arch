@@ -88,6 +88,8 @@
           - polybar
           - swaylock
           - swayidle
+          - rofi
+          - dunst
         state: present
         update_cache: true
 
@@ -117,6 +119,11 @@
       become_user: "{{ home_user }}"
       args:
         chdir: /opt/yay
+
+    - name: Upgrade system
+      pacman:
+        update_cache: true
+        upgrade: true
 
     - name: Run yay
       expect:
@@ -167,9 +174,9 @@
       with_items:
         - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
         - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
-        - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
+        - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc", force: true }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
-        - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/arthur.rasi" }
+        - { src: "{{ home_dir }}/dotfiles/rofi/config.rasi", dest: "{{ home_dir }}/.config/rofi/dracula.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
