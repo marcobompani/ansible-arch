@@ -183,6 +183,7 @@
         dest: "{{ item.dest }}"
         owner: "{{ home_user }}"
         group: "{{ home_user }}"
+        mode: "0644"
         force: true
         follow: false
         state: link
