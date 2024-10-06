@@ -95,7 +95,7 @@
       git:
         repo: https://aur.archlinux.org/yay.git
         dest: /opt/yay
-      become_user: "{{ home_user }}"
+      become: true
 
     - name: Prep yay
       file:
@@ -114,7 +114,7 @@
 
     - name: Install yay
       command: makepkg --noconfirm -si
-      become_user: "{{ home_user }}"
+      become: true
       args:
         chdir: /opt/yay
 
