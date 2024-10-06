@@ -1,95 +1,116 @@
 - hosts: localhost
   become: true
-  gather_facts: true
+  gather_facts: false
   vars:
     dotfiles: https://github.com/marcobompani/dotfiles
-    home_dir: /home/marco
     home_user: marco
+    home_dir: "/home/{{ home_user }}"
+  vars_prompt:
+    - name: password
+      prompt: "Enter the password for {{ home_user }}"
 
   tasks:
-    - name: Install core pacman packages
+    - name: Install basic utils
       pacman:
         name:
           - base-devel
           - tmux
-          - htop
-          - tcpdump
           - git
           - python-pip
           - python-pexpect
-          - trash-cli
-          - xsel
-          - net-tools
-          - netctl
-          - nfs-utils
-          - wget
-          - curl
-          - dnsutils
-          - findutils
-          - unzip
+          - kitty
           - openssl
-          - mlocate
-          - speedtest-cli
-          - neovim
+          - vim
           - man-db
           - man-pages
-          - mingw-w64-gcc
-          - mingw-w64-binutils
           - pyenv
           - python-pipenv
           - cron
+          - xorg
+          - vlc
+          - keepass
+          - gimp
+          - imagemagick
+          - flameshot
+          - libreoffice-fresh
+          - sudo
+          - openssh
+          - obsidian
           - nvidia
-          - xorg-server
-          - xorg-xinit
-          - yazi
-          - ttf-hack
-          - keybase
-          - gnupg
         state: present
         update_cache: true
-      tags: install, packages, pacman
 
-    - name: Install Virtualbox guest utils
-      pacman:
-        name: virtualbox-guest-utils
-        state: present
-        update_cache: true
-      when: ansible_facts['bios_version'] == "VirtualBox"
-      tags: install, packages, pacman, virtualbox
+    - name: Allow wheel users to have passwordless sudo
+      lineinfile:
+        path: /etc/sudoers.d/wheel
+        line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+        mode: 0440
+        create: yes
+        validate: /usr/bin/visudo -cf %s
 
-    - name: Install utilities
+    - name: Create user
+      user:
+        name: {{ home_user }}
+        shell: /bin/bash
+        groups: wheel
+        password: "{{ password | password_hash('sha512') }}"
+
+    - name: Install download utilities
       pacman:
         name:
-          - rofi
-          - kitty
-          - i3-gaps
-          - i3lock
-          - keepass
-          - dunst
-          - alsa-utils
-          - vlc
-          - flameshot
-          - discord
+          - wget
+          - curl
         state: present
         update_cache: true
-      tags: install, packages, pacman
+
+    - name: Install archival utilities
+      pacman:
+        name:
+          - unzip
+          - zip
+          - bzip2
+          - gzip
+          - tar
+        state: present
+        update_cache: true
+
+    - name: Install Sway
+      pacman:
+        name:
+          - sway
+        state: present
+        update_cache: true
+
+    - name: Enable SDDM
+      ansible.builtin.systemd_service:
+        name: sddm.service
+        enabled: true
+        masked: false
 
     - name: Clone yay
       git:
         repo: https://aur.archlinux.org/yay.git
         dest: /opt/yay
-      tags: yay, git
 
     - name: Prep yay
-      command: chown -R {{ home_user }}:{{ home_user }} /opt/yay
-      tags: yay
+      file:
+        path: /opt/yay
+        owner: "{{ home_user }}"
+        group: "{{ home_user }}"
+        recurse: true
+
+    # https://aur.archlinux.org/packages/yay
+    - name: Fix connection refused on proxy.golang.org
+      file:
+        src: /run/systemd/resolve/stub-resolv.conf
+        dest: /etc/resolv.conf
+        state: link
 
     - name: Install yay
       command: makepkg --noconfirm -si
-      become: false
+      become_user: "{{ home_user }}"
       args:
         chdir: /opt/yay
-      tags: yay
 
     - name: Run yay
       expect:
@@ -98,26 +119,18 @@
         responses:
           Y/n: Y
       become: true
-      tags: yay
 
     - name: Install AUR packages
       command: yay --noconfirm --needed -S {{ item }}
       with_items:
         - google-chrome
-        - polybar
-        - siji-git
-        - ttf-unifont
-        - picom
-        - gnome-shell-extension-topicons-plus
       become_user: "{{ home_user }}"
-      tags: aur, install, packages
 
     - name: Clone dotfiles
       git:
         repo: "{{ dotfiles }}"
         dest: "{{ home_dir }}/dotfiles"
       become_user: "{{ home_user }}"
-      tags: git, dotfiles
 
     - name: Make directories
       file:
@@ -129,15 +142,10 @@
       with_items:
         - { path: "{{ home_dir }}/.config" }
         - { path: "{{ home_dir }}/.config/polybar" }
-        - { path: "{{ home_dir }}/.config/nvim" }
-        - { path: "{{ home_dir }}/.config/alacritty" }
         - { path: "{{ home_dir }}/.config/rofi" }
         - { path: "{{ home_dir }}/.config/dunst" }
-        - { path: "{{ home_dir }}/.config/i3" }
         - { path: "{{ home_dir }}/.config/picom" }
         - { path: "{{ home_dir }}/.config/flameshot" }
-        - { path: "{{ home_dir }}/.local/share/nvim/backup" }
-      tags: dotfiles, folders
 
     - name: Link dotfiles
       file:
@@ -149,54 +157,10 @@
         state: link
       with_items:
         - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
-        - { src: "{{ home_dir }}/dotfiles/nvim/init.vim", dest: "{{ home_dir }}/.config/nvim/init.vim" }
-        - { src: "{{ home_dir }}/dotfiles/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
         - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
         - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
-        - { src: "{{ home_dir }}/dotfiles/alacritty/alacritty.conf", dest: "{{ home_dir }}/.config/alacritty/alacritty.conf" }
         - { src: "{{ home_dir }}/dotfiles/polybar/config", dest: "{{ home_dir }}/.config/polybar/config" }
         - { src: "{{ home_dir }}/dotfiles/dunst/dunstrc", dest: "{{ home_dir }}/.config/dunst/dunstrc" }
         - { src: "{{ home_dir }}/dotfiles/rofi/dracula.rasi", dest: "{{ home_dir }}/.config/rofi/arthur.rasi" }
         - { src: "{{ home_dir }}/dotfiles/flameshot/flameshot.ini", dest: "{{ home_dir }}/.config/flameshot/flameshot.ini" }
         - { src: "{{ home_dir }}/dotfiles/arch.jpg", dest: "{{ home_dir }}/Pictures/arch.jpg" }
-      tags: dotfiles, symlinks
-
-    - name: Link launch.sh
-      file:
-        src: "{{ home_dir }}/dotfiles/polybar/launch.sh"
-        dest: "{{ home_dir }}/.config/polybar/launch.sh"
-        owner: "{{ home_user }}"
-        group: "{{ home_user }}"
-        mode: "0744"
-        state: link
-      tags: symlinks
-
-    - name: Create xinitrc
-      shell: echo "exec i3" > {{ home_dir }}/.xinitrc
-      become_user: "{{ home_user }}"
-      tags: xinitrc
-
-    - name: Install pip packages
-      pip:
-        name:
-          - youtube-dl
-          - twitch-dl
-      tags: install, packages, pip
-
-    - name: Check for Vim-Plug
-      stat:
-        path: "{{ home_dir }}/.local/share/nvim/site/autoload/plug.vim"
-      register: plug_exists
-      become_user: "{{ home_user }}"
-      tags: vim, install
-
-    - name: Install Vim-Plug
-      shell: sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-      become_user: "{{ home_user }}"
-      when: plug_exists.stat.exists == false
-      tags: vim, install
-
-    - name: Install Vim Plugins
-      command: nvim --headless -E -s -c "source {{ home_dir }}/.config/nvim/init.vim" -c PlugInstall -c qa
-      become_user: "{{ home_user }}"
-      tags: vim, install, plugins
