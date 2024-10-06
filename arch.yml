@@ -97,6 +97,7 @@
       git:
         repo: https://aur.archlinux.org/yay.git
         dest: /opt/yay
+      become_user: "{{ home_user }}"
 
     - name: Prep yay
       file:
@@ -111,6 +112,7 @@
         src: /run/systemd/resolve/stub-resolv.conf
         dest: /etc/resolv.conf
         state: link
+        force: true
 
     - name: Install yay
       command: makepkg --noconfirm -si
