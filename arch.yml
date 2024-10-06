@@ -87,6 +87,10 @@
           - swaybg
           - foot
           - polkit
+          - polybar
+          - swaylock
+          - swayidle
+          - sway-notification-center
         state: present
         update_cache: true
 
@@ -135,6 +139,7 @@
       command: yay --noconfirm --needed -S {{ item }}
       with_items:
         - google-chrome
+        - ttf-meslo-nerd
       become_user: "{{ home_user }}"
 
     - name: Clone dotfiles
