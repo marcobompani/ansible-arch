@@ -38,6 +38,8 @@
           - openssh
           - obsidian
           - nvidia
+          - nvidia-utils
+          - mesa
           - nerd-fonts
           - ttf-jetbrains-mono
         state: present
