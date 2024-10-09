@@ -30,6 +30,7 @@
       - obsidian
       - nerd-fonts
       - ttf-jetbrains-mono
+      - thunar
     state: present
 
 - name: Install download utilities
@@ -56,6 +57,7 @@
       - polkit
       - rofi
       - dunst
+      - nitrogen
       - xf86-video-nouveau
       - xf86-video-intel
     state: present
