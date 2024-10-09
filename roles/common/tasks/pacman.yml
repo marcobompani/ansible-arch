@@ -57,7 +57,7 @@
       - polkit
       - rofi
       - dunst
-      - nitrogen
+      - feh
       - xf86-video-nouveau
       - xf86-video-intel
     state: present
