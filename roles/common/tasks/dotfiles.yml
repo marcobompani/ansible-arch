@@ -15,7 +15,7 @@
     - { path: "{{ home_dir }}/.config" }
     - { path: "{{ home_dir }}/.SpaceVim.d" }
     - { path: "{{ home_dir }}/.config/kitty" }
-    - { path: "{{ home_dir }}/.config/sway" }
+    - { path: "{{ home_dir }}/.config/i3" }
     - { path: "{{ home_dir }}/.config/polybar" }
     - { path: "{{ home_dir }}/.config/rofi" }
     - { path: "{{ home_dir }}/.config/dunst" }
@@ -35,7 +35,7 @@
     state: link
   with_items:
     - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
-    - { src: "{{ home_dir }}/dotfiles/sway/config", dest: "{{ home_dir }}/.config/sway/config" }
+    - { src: "{{ home_dir }}/dotfiles/sway/config", dest: "{{ home_dir }}/.config/i3/config" }
     - { src: "{{ home_dir }}/dotfiles/kitty/kitty.conf", dest: "{{ home_dir }}/.config/kitty/kitty.conf" }
     - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
     - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }

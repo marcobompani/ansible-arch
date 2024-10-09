@@ -17,6 +17,8 @@
       - cron
       - xorg-xinit
       - xorg-server
+      - xorg-xrandr
+      - arandr
       - vlc
       - keepass
       - gimp

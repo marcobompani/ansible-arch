@@ -15,6 +15,7 @@
 
 - name: Configure xinit
   lineinfile:
-    path: "{{ home_user }}/.xinitrc"
+    path: "{{ home_dir }}/.xinitrc"
     line: "exec i3"
     create: yes
+  become_user: "{{ home_user }}"
