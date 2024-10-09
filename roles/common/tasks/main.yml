@@ -4,8 +4,8 @@
     upgrade: true
   tags: pacman, upgrade
 
-- include: pacman.yml
-- include: user.yml
-- include: yay.yml
-- include: spacevim.yml
-- include: dotfiles.yml
+- include_tasks: pacman.yml
+- include_tasks: user.yml
+- include_tasks: yay.yml
+- include_tasks: spacevim.yml
+- include_tasks: dotfiles.yml

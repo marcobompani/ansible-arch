@@ -1,7 +1,5 @@
----
-
 - hosts: localhost
-  vars_promt:
+  vars_prompt:
     - name: password
       prompt: "Enter the password for {{ home_user }}"
   become: true
