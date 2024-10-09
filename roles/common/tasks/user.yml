@@ -12,3 +12,9 @@
     shell: /bin/bash
     groups: wheel
     password: "{{ password | password_hash('sha512') }}"
+
+- name: Configure xinit
+  lineinfile:
+    path: "{{ home_user }}/.xinitrc"
+    line: "exec i3"
+    create: yes
