@@ -5,6 +5,7 @@
   tags: pacman, upgrade
 
 - include_tasks: pacman.yml
+  tags: pacman, packages
 - include_tasks: user.yml
 - include_tasks: yay.yml
 - include_tasks: spacevim.yml
