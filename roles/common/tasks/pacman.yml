@@ -15,7 +15,8 @@
       - python-pipenv
       - python-passlib
       - cron
-      - xorg
+      - xorg-xinit
+      - xorg-server
       - vlc
       - keepass
       - gimp
@@ -25,7 +26,6 @@
       - sudo
       - openssh
       - obsidian
-      - nvidia
       - nerd-fonts
       - ttf-jetbrains-mono
     state: present
@@ -54,5 +54,7 @@
       - polkit
       - rofi
       - dunst
+      - xf86-video-nouveau
+      - xf86-video-intel
     state: present
 
