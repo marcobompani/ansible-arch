@@ -1,0 +1,11 @@
+- name: Upgrade System
+  pacman:
+    update_cache: true
+    upgrade: true
+  tags: pacman, upgrade
+
+- include: pacman.yml
+- include: user.yml
+- include: yay.yml
+- include: spacevim.yml
+- include: dotfiles.yml

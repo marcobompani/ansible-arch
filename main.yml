@@ -1,0 +1,9 @@
+---
+
+- hosts: localhost
+  vars_promt:
+    - name: password
+      prompt: "Enter the password for {{ home_user }}"
+  become: true
+  roles:
+    - common

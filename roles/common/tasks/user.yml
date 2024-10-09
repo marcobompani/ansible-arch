@@ -1,0 +1,14 @@
+- name: Allow wheel users to have passwordless sudo
+  lineinfile:
+    path: /etc/sudoers.d/wheel
+    line: "%wheel ALL=(ALL) NOPASSWD: ALL"
+    mode: 0440
+    create: yes
+    validate: /usr/bin/visudo -cf %s
+
+- name: Create user
+  user:
+    name: "{{ home_user }}"
+    shell: /bin/bash
+    groups: wheel
+    password: "{{ password | password_hash('sha512') }}"

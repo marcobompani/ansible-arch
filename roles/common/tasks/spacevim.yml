@@ -1,0 +1,10 @@
+- name: Get SpaceVim install script
+  get_url:
+    url: https://spacevim.org/install.sh
+    dest: "{{ home_dir }}/install-spacevim.sh"
+    mode: 0747
+  become_user: "{{ home_user }}"
+
+- name: Install SpaceVim
+  become_user: "{{ home_user }}"
+  command: "bash {{ home_dir }}/install-spacevim.sh"

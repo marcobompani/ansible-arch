@@ -1,0 +1,6 @@
+---
+# vars file for common
+
+dotfiles: https://github.com/marcobompani/dotfiles
+home_user: marco
+home_dir: "/home/{{ home_user }}"

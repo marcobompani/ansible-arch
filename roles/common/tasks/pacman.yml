@@ -1,0 +1,58 @@
+- name: Install basic utils
+  pacman:
+    name:
+      - base-devel
+      - tmux
+      - git
+      - python-pip
+      - python-pexpect
+      - kitty
+      - openssl
+      - vim
+      - man-db
+      - man-pages
+      - pyenv
+      - python-pipenv
+      - python-passlib
+      - cron
+      - xorg
+      - vlc
+      - keepass
+      - gimp
+      - imagemagick
+      - flameshot
+      - libreoffice-fresh
+      - sudo
+      - openssh
+      - obsidian
+      - nvidia
+      - nerd-fonts
+      - ttf-jetbrains-mono
+    state: present
+
+- name: Install download utilities
+  pacman:
+    name:
+      - wget
+      - curl
+    state: present
+
+- name: Install archival utilities
+  pacman:
+    name:
+      - unzip
+      - zip
+      - bzip2
+      - gzip
+      - tar
+    state: present
+
+- name: Install i3
+  pacman:
+    name:
+      - i3
+      - polkit
+      - rofi
+      - dunst
+    state: present
+

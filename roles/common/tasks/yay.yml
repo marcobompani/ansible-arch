@@ -1,0 +1,39 @@
+- name: Clone yay
+  git:
+    repo: https://aur.archlinux.org/yay.git
+    dest: /opt/yay
+
+- name: Prep yay
+  file:
+    path: /opt/yay
+    owner: "{{ home_user }}"
+    group: "{{ home_user }}"
+    recurse: true
+
+- name: Fix connection refused on proxy.golang.org
+  file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+
+- name: Install yay
+  command: makepkg --noconfirm -si
+  become_user: "{{ home_user }}"
+  args:
+    chdir: /opt/yay
+
+- name: Run yay
+  expect:
+    command: yay
+    timeout: 300
+    responses:
+      Y/n: Y
+  become_user: "{{ home_user }}"
+
+- name: Install AUR packages
+  command: yay --noconfirm --needed -S {{ item }}
+  with_items:
+    - google-chrome
+    - ttf-iosevka
+  become_user: "{{ home_user }}"
