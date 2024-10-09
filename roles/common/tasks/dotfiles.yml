@@ -35,7 +35,7 @@
     state: link
   with_items:
     - { src: "{{ home_dir }}/dotfiles/tmux/tmux.conf", dest: "{{ home_dir }}/.tmux.conf" }
-    - { src: "{{ home_dir }}/dotfiles/sway/config", dest: "{{ home_dir }}/.config/i3/config" }
+    - { src: "{{ home_dir }}/dotfiles/i3/config", dest: "{{ home_dir }}/.config/i3/config" }
     - { src: "{{ home_dir }}/dotfiles/kitty/kitty.conf", dest: "{{ home_dir }}/.config/kitty/kitty.conf" }
     - { src: "{{ home_dir }}/dotfiles/bash/bash_aliases", dest: "{{ home_dir }}/.bash_aliases" }
     - { src: "{{ home_dir }}/dotfiles/bash/bashrc", dest: "{{ home_dir }}/.bashrc" }
